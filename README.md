@@ -1,2 +1,2 @@
-# post_user_app_node
+# post-user-app-node
 Application to manage users and posts (Third app in node js)
