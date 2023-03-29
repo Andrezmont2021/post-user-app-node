@@ -1,0 +1,21 @@
+{
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "compilerOptions": {
+    "target": "ESNEXT",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "watch": false,
+    "sourceMap": true //Important to can debug code
+  },
+  "exclude": ["./src/__tests__", "./src/jest.config.ts", "dist"]
+}
