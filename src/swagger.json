@@ -1,0 +1,679 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Posts Node App",
+    "description": "Application to manage posts and users"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/api/v1/user/register": {
+      "post": {
+        "summary": "Register an user",
+        "tags": ["Endpoints For User Module"],
+        "description": "Allow to register an user",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "User that we want to register",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/userObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull operation",
+            "schema": {
+              "$ref": "#/definitions/userCreated"
+            }
+          },
+          "400": {
+            "description": "Invalid values",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/login": {
+      "post": {
+        "summary": "Login an user",
+        "tags": ["Endpoints For User Module"],
+        "description": "Allow to login a user through DB",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "userLogin",
+            "description": "User email and password",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/userLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull login",
+            "schema": {
+              "$ref": "#/definitions/loginSuccess"
+            }
+          },
+          "400": {
+            "description": "Invalid values",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/register": {
+      "post": {
+        "summary": "Create a post",
+        "tags": ["Endpoints For Post Module"],
+        "description": "Allow to create a post ",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "post",
+            "description": "post that we want to create",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/postObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull operation",
+            "schema": {
+              "$ref": "#/definitions/postCreated"
+            }
+          },
+          "400": {
+            "description": "Invalid values",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/getAll": {
+      "get": {
+        "summary": "Get all posts",
+        "tags": ["Endpoints For Post Module"],
+        "description": "Allow to get all posts registered in DB",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "All posts retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/postList"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/addPostComment": {
+      "post": {
+        "summary": "Add a post comment",
+        "tags": ["Endpoints For Post Module"],
+        "description": "Allow to add a post comment",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "postComment",
+            "description": "post comment that we want to add",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/postCommentObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull operation",
+            "schema": {
+              "$ref": "#/definitions/postCommentCreated"
+            }
+          },
+          "400": {
+            "description": "Invalid values",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/getPostComments": {
+      "get": {
+        "summary": "Get all comments for an specific post",
+        "tags": ["Endpoints For Post Module"],
+        "description": "Allow to get all post comments for an specific post",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "postId",
+            "description": "Post id",
+            "required": true,
+            "type": "string",
+            "example": 1077
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All comments for a post retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/postCommentList"
+            }
+          },
+          "400": {
+            "description": "Invalid values",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/{postId}": {
+      "delete": {
+        "summary": "Delete a post",
+        "tags": ["Endpoints For Post Module"],
+        "description": "Allow to delete a post ",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "postId",
+            "description": "Post id that we want to delete",
+            "required": true,
+            "type": "number",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull operation",
+            "schema": {
+              "$ref": "#/definitions/postDeleted"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/notFound"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/updateLikes": {
+      "patch": {
+        "summary": "Update the like counter for a specific post",
+        "tags": ["Endpoints For Post Module"],
+        "description": "Allow to update the like counter for a specific post ",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "postId",
+            "description": "Post id that we want to update the like counter",
+            "required": true,
+            "type": "number",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull operation",
+            "schema": {
+              "$ref": "#/definitions/updateLikeSuccessfully"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/notFound"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/post/updateDislikes": {
+      "patch": {
+        "summary": "Update the dislike counter for a specific post",
+        "tags": ["Endpoints For Post Module"],
+        "description": "Allow to update the dislike counter for a specific post ",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "postId",
+            "description": "Post id that we want to update the dislike counter",
+            "required": true,
+            "type": "number",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfull operation",
+            "schema": {
+              "$ref": "#/definitions/updateDislikeSuccessfully"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/notFound"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/invalidResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "userCreated": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User registered successfully"
+        },
+        "data": {
+          "type": "object",
+          "$ref": "#/definitions/userObject"
+        }
+      }
+    },
+    "postCreated": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Post created successfully"
+        },
+        "data": {
+          "type": "object",
+          "$ref": "#/definitions/post"
+        }
+      }
+    },
+    "postDeleted": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Post deleted successfully"
+        },
+        "data": {
+          "type": "object",
+          "$ref": "#/definitions/post"
+        }
+      }
+    },
+    "postCommentCreated": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Post comment added successfully"
+        },
+        "data": {
+          "type": "object",
+          "$ref": "#/definitions/postComment"
+        }
+      }
+    },
+    "userObject": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "example": "Felipe"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Orozco"
+        },
+        "email": {
+          "type": "string",
+          "example": "felipe.orozco@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "1234felipe"
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 15
+        },
+        "firstName": {
+          "type": "string",
+          "example": "Felipe"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Orozco"
+        },
+        "email": {
+          "type": "string",
+          "example": "felipe.orozco@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "1234felipe"
+        }
+      }
+    },
+    "userLogin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "felipe.orozco@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "1234felipe"
+        }
+      }
+    },
+    "invalidResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Message"
+        }
+      }
+    },
+    "notFound": {
+      "type": "string",
+      "example": "Message"
+    },
+    "loginSuccess": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User login successfully"
+        }
+      }
+    },
+    "postObject": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "Post example 1"
+        },
+        "imagePath": {
+          "type": "string",
+          "example": "/path/image.png"
+        },
+        "addedByUserId": {
+          "type": "number",
+          "example": 165
+        }
+      }
+    },
+    "post": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 155
+        },
+        "description": {
+          "type": "string",
+          "example": "Post example 1"
+        },
+        "imagePath": {
+          "type": "string",
+          "example": "/path/image.png"
+        },
+        "likeCount": {
+          "type": "number",
+          "example": 0
+        },
+        "dislikeCount": {
+          "type": "number",
+          "example": 0
+        },
+        "datetimeCreated": {
+          "type": "string",
+          "example": "2023-02-16 23:22:38"
+        },
+        "addedByUserId": {
+          "type": "number",
+          "example": 165
+        }
+      }
+    },
+    "postDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 155
+        },
+        "description": {
+          "type": "string",
+          "example": "Post example 1"
+        },
+        "imagePath": {
+          "type": "string",
+          "example": "/path/image.png"
+        },
+        "likeCount": {
+          "type": "number",
+          "example": 0
+        },
+        "dislikeCount": {
+          "type": "number",
+          "example": 0
+        },
+        "datetimeCreated": {
+          "type": "string",
+          "example": "2023-02-16 23:22:38"
+        },
+        "user": {
+          "type": "object",
+          "$ref": "#/definitions/user"
+        }
+      }
+    },
+    "postList": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/postDTO"
+          }
+        }
+      }
+    },
+    "postCommentObject": {
+      "type": "object",
+      "properties": {
+        "postId": {
+          "type": "number",
+          "example": 15
+        },
+        "comment": {
+          "type": "string",
+          "example": "Comment for post example"
+        },
+        "addedByUserId": {
+          "type": "number",
+          "example": 165
+        }
+      }
+    },
+    "postComment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 151
+        },
+        "postId": {
+          "type": "number",
+          "example": 15
+        },
+        "comment": {
+          "type": "string",
+          "example": "Comment for post example"
+        },
+        "datetimeCreated": {
+          "type": "string",
+          "example": "2023-02-16 23:22:38"
+        },
+        "addedByUserId": {
+          "type": "number",
+          "example": 165
+        }
+      }
+    },
+    "postCommentDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "comment": {
+          "type": "string",
+          "example": "Its an example of comment for the post 1"
+        },
+        "datetimeCreated": {
+          "type": "string",
+          "example": "2023-02-16 23:22:38"
+        },
+        "user": {
+          "type": "object",
+          "$ref": "#/definitions/user"
+        }
+      }
+    },
+    "postCommentList": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/postCommentDTO"
+          }
+        }
+      }
+    },
+    "updateLikeSuccessfully": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Likes updated to post # {postId}"
+        }
+      }
+    },
+    "updateDislikeSuccessfully": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Dislikes updated to post # {postId}"
+        }
+      }
+    }
+  }
+}
